@@ -1,0 +1,65 @@
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["debian-openssl-3.0.x", "rhel-openssl-1.0.x"]
+}
+
+model User {
+  id            Int         @id @default(autoincrement())
+  email         String      @unique
+  name          String
+  createdAt     DateTime    @default(now())
+  Rating        Rating[]
+  listenedSongs Song[]      @relation("UserListenHistory")
+  likedSongs    Song[]      @relation("UserLikeSong")
+  songQueue     SongQueue[] @relation("UserSongQueue")
+}
+
+
+model Artist {
+  id           String       @id
+  channelTitle String
+  songs        Song[]        @relation("ArtistSongs")
+}
+
+model Song {
+  id             String      @id
+  title          String
+  createdAt      DateTime    @default(now())
+  listens        Int
+  published      String
+  artist         Artist      @relation("ArtistSongs",fields: [artistId], references: [id])
+  artistId       String      
+  Rating         Rating[]
+  listeners      User[]      @relation("UserListenHistory")
+  queuedBy       SongQueue[] @relation("SongQueueToSong")
+  likes          User[]      @relation("UserLikeSong")
+  numberofLikes  Int         @default(0)
+}
+
+model SongQueue {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  songId    String
+  createdAt DateTime @default(now())
+
+  user User @relation("UserSongQueue", fields: [userId], references: [id])
+  song Song @relation("SongQueueToSong", fields: [songId], references: [id])
+
+  @@unique([userId, songId]) 
+}
+
+model Rating {
+  ratingID  Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  userId    Int
+  songId    String
+  rating    Int
+
+  user User @relation(fields: [userId], references: [id])
+  song Song @relation(fields: [songId], references: [id])
+}

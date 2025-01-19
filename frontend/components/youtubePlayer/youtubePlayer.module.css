@@ -1,0 +1,12 @@
+.playerContainer {
+  position: absolute;
+
+  top: 16%;
+  right: 5%;
+  height: 50%;
+  width: 20%;
+  background-color: rgb(152, 137, 167);
+}
+.youtubeWindow {
+  border-radius: 0.5rem;
+}

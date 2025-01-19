@@ -1,0 +1,204 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Sample SAM Template for TypeScript Lambda
+
+Parameters:
+  ProjectCache:
+    Type: String
+    Description: "The secret key for MyScheduledFunction"
+  SelectorUrl:
+    Type: String
+    NoEcho: true
+  Key:
+    Type: String
+    NoEcho: true
+  DatabaseUrl:
+    Type: String
+    NoEcho: true
+  NextAuthSecret:
+    Type: String
+    NoEcho: true
+  FrontendUrl:
+    Type: String
+    NoEcho: true
+
+# dont fucking change a thing here! this needs to be fixed
+Resources:
+  ExistingApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: song-thing
+      StageName: Prod
+
+  MyScheduledFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: update-songs-db
+      Handler: lambda-nodejs18.x/src/handlers/getNewSongs.handler_function
+      Runtime: nodejs18.x
+      CodeUri: ../
+      MemorySize: 1024
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      Events:
+        ScheduleEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 hour)
+      Environment:
+        Variables:
+          KEY: !Ref Key
+          DATABASE_URL: !Ref DatabaseUrl
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: false
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - lambda-node/src/handlers/getNewSongs.ts
+        Loader:
+          - .prisma=file
+          - .so.node=file
+
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: hello-world
+      CodeUri: ./
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+            RestApiId: !Ref ExistingApi
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/app.ts
+
+  FetchSongsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: fetch-songs
+      CodeUri: ./
+      Handler: src/handlers/fetchsongs.lambdaHandler
+      Runtime: nodejs18.x
+      Timeout: 30
+      Events:
+        FetchSongsAPI:
+          Type: Api
+          Properties:
+            Path: /songlist
+            Method: get
+            RestApiId: !Ref ExistingApi
+      Environment:
+        Variables:
+          SELECTOR_URL: !Ref SelectorUrl
+          NEXTAUTH_SECRET: !Ref NextAuthSecret
+          FRONTEND_URL: !Ref FrontendUrl
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/fetchsongs.ts
+        #despite not using prisma, this is required
+        # else esbuild shits it's pants
+        Loader:
+          - .prisma=file
+          - .so.node=file
+
+  FetchUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: fetch-user
+      CodeUri: ./
+      Handler: src/handlers/userHandler.fetchUser
+      Runtime: nodejs18.x
+      Timeout: 30
+      Events:
+        FetchSongsAPI:
+          Type: Api
+          Properties:
+            Path: /user
+            Method: get
+            RestApiId: !Ref ExistingApi
+      Environment:
+        Variables:
+          NEXTAUTH_SECRET: !Ref NextAuthSecret
+          DATABASE_URL: !Ref DatabaseUrl
+          FRONTEND_URL: !Ref FrontendUrl
+
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/userHandler.ts
+        Loader:
+          - .prisma=file
+          - .so.node=file
+
+  createUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: create-user
+      CodeUri: ./
+      Handler: src/handlers/userHandler.createUser
+      Runtime: nodejs18.x
+      Timeout: 30
+      Events:
+        FetchSongsAPI:
+          Type: Api
+          Properties:
+            Path: /user
+            Method: post
+            RestApiId: !Ref ExistingApi
+      Environment:
+        Variables:
+          NEXTAUTH_SECRET: !Ref NextAuthSecret
+          DATABASE_URL: !Ref DatabaseUrl
+          FRONTEND_URL: !Ref FrontendUrl
+
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/userHandler.ts
+        Loader:
+          - .prisma=file
+          - .so.node=file
+
+  likeSong:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: like-song
+      CodeUri: ./
+      Handler: src/handlers/fetchsongs.likeSong
+      Runtime: nodejs18.x
+      Timeout: 30
+      Events:
+        FetchSongsAPI:
+          Type: Api
+          Properties:
+            Path: /song/{songId}/like
+            Method: post
+            RestApiId: !Ref ExistingApi
+      Environment:
+        Variables:
+          NEXTAUTH_SECRET: !Ref NextAuthSecret
+          DATABASE_URL: !Ref DatabaseUrl
+          FRONTEND_URL: !Ref FrontendUrl
+
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/fetchsongs.ts
+        Loader:
+          - .prisma=file
+          - .so.node=file

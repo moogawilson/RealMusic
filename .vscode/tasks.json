@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "npm run build (Node.js Lambda)",
+      "type": "npm",
+      "script": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/lambda/lambda-nodejs18.x" // Running `npm run build` in the correct directory
+      }
+    },
+    {
+      "label": "sam build (Python Lambda)",
+      "type": "shell",
+      "command": "sam",
+      "args": ["build"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/python/lambda-python3.12" // Running `sam build` in the correct Python directory
+      }
+    }
+  ]
+}

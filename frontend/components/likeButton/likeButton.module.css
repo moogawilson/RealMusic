@@ -1,0 +1,23 @@
+.likeContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* border-color: aliceblue; */
+  margin-left: 1rem;
+  margin-bottom: 5rem;
+  background-color: rgb(51, 53, 54);
+  width: 7rem;
+  border-radius: 1.5rem;
+}
+
+.likeText {
+  display: flex;
+  align-items: center;
+  margin-left: 0.7rem;
+}
+
+.likeImage {
+  display: flex;
+  margin-left: 0.5rem;
+  align-items: center;
+}

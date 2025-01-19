@@ -1,0 +1,29 @@
+{
+	"name": "your-project-name",
+	"version": "1.0.0",
+	"description": "Your project description",
+	"main": "app.js",
+	"scripts": {
+		"build": "sam build && npm run copy-prisma && npm run copy-schema",
+		"copy-prisma": "for dir in .aws-sam/build/*; do if [ -d \"$dir\" ] && ls \"$dir\"/libquery_engine-rhel-openssl-1.0.x.so-*.node 1>/dev/null 2>&1; then mv \"$dir\"/libquery_engine-rhel-openssl-1.0.x.so-*.node \"$dir\"/libquery_engine-rhel-openssl-1.0.x.so.node; fi; done",
+		"copy-schema": "for dir in .aws-sam/build/*; do if [ -d \"$dir\" ] && ls \"$dir\"/schema-*.prisma 1>/dev/null 2>&1; then mv \"$dir\"/schema-*.prisma \"$dir\"/schema.prisma; fi; done",
+		"deploy": "sam deploy"
+	},
+	"devDependencies": {
+		"@types/aws-lambda": "^8.10.92",
+		"@types/jsonwebtoken": "^9.0.7",
+		"prisma": "^5.21.1"
+	},
+	"dependencies": {
+		"@googleapis/youtube": "^20.0.0",
+		"@prisma/client": "^5.21.1",
+		"@types/node": "^22.8.6",
+		"aws-lambda": "^1.0.7",
+		"axios": "^1.7.7",
+		"cookie": "^1.0.2",
+		"dotenv": "^16.4.5",
+		"esbuild": "^0.24.0",
+		"jsonwebtoken": "^9.0.2",
+		"next-auth": "^4.24.11"
+	}
+}

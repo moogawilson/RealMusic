@@ -1,0 +1,9 @@
+.aws-sam/
+node_modules/*/test/
+node_modules/*/tests/
+node_modules/*/.github/
+node_modules/*/docs/
+**/*.ts
+!**/*.d.ts
+**/*.md
+.git/

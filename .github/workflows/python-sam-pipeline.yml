@@ -1,0 +1,89 @@
+name: Deploy Song Selector to Production
+
+on:
+  push:
+    branches: ["main"]
+
+env:
+  AWS_REGION: ap-southeast-2
+  ECR_REPOSITORY: song-selector
+  IMAGE_TAG: latest
+
+permissions:
+  contents: read
+  id-token: write # Needed for AWS authentication
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL_PYTHON: ${{ secrets.DATABASE_URL_PYTHON }},
+      LOCAL_DEPLOYMENT: ${{ secrets.LOCAL_DEPLOYMENT }}
+    steps:
+      - name: Enable Debugging
+        run: echo "ACTIONS_STEP_DEBUG=true" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: thing
+        run: |
+          echo "hello"
+          echo "fuck ${{ secrets.AWS_ACCESS_KEY_ID }}"
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        uses: docker/build-push-action@v5
+        with:
+          context: lambda-python
+          push: true
+          tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+          platforms: linux/amd64
+          provenance: false
+          build-args: |
+            --no-cache
+
+      - name: install AWS CLI
+        env:
+          AWS_PAGER: ""
+        if: env.LOCAL_DEPLOYMENT == 'true'
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Update Lambda environment variables
+        env:
+          AWS_PAGER: ""
+        run: |
+          aws lambda update-function-configuration \
+            --function-name song-selector \
+            --environment "Variables={DATABASE_URL_PYTHON=${{ secrets.DATABASE_URL_PYTHON }}}"
+          aws lambda wait function-updated --function-name song-selector
+
+      - name: Update Lambda Function
+        env:
+          AWS_PAGER: ""
+        run: |
+          aws lambda update-function-code \
+            --function-name song-selector \
+            --image-uri ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} \
+            --region ${{ env.AWS_REGION }} \

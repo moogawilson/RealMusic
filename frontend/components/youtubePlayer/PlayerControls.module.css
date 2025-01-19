@@ -1,0 +1,22 @@
+.controls {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: #1a1918;
+}
+
+.buttons {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  top: 35%;
+  transform: translateY(-50%);
+}
+
+.progressBar {
+  position: absolute;
+  bottom: 1%;
+  width: 50%;
+}

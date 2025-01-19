@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* body {
+  color: white;
+  background-color: black !important;
+  background-image: none;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+} */
+
+html,
+body {
+  color: white;
+  background-color: black !important;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

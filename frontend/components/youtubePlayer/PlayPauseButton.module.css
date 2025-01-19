@@ -1,0 +1,13 @@
+.button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 50px;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonImage {
+  width: 90%;
+  display: block;
+}

@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  DatabaseUrlPython:
+    Type: String
+    Description: "Database URL for the application"
+
+Resources:
+  ExistingApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: song-selector
+      StageName: Prod
+      Cors:
+        AllowOrigin: "'*'"
+        AllowMethods: "'GET,OPTIONS'"
+        AllowHeaders: "'Content-Type,Authorization'"
+        MaxAge: "'300'"
+
+  SongSelector:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: song-selector
+      PackageType: Image
+      ImageUri: 548537750163.dkr.ecr.ap-southeast-2.amazonaws.com/song-selector
+      Timeout: 20
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /api/songs/all
+            Method: get
+            RestApiId: !Ref ExistingApi
+
+      Environment:
+        Variables:
+          DATABASE_URL_PYTHON: !Ref DatabaseUrlPython
+    Metadata:
+      Dockerfile: Dockerfile
+      DockerContext: .
+      DockerTag: latest

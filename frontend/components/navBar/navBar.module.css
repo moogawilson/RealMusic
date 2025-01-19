@@ -1,0 +1,28 @@
+.navbar {
+  position: relative;
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1a1918;
+}
+
+.githubContainer {
+  display: flex;
+  flex-direction: row;
+
+  margin-left: auto;
+  align-items: center;
+}
+
+.logo {
+  position: relative;
+  margin-right: 1rem;
+}
+
+.signIn {
+  position: relative;
+  margin-left: 1rem;
+}

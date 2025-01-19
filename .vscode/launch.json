@@ -1,0 +1,43 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Next.js",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev",
+      "cwd": "${workspaceFolder}/frontend"
+    },
+    {
+      "name": "Build & Start Node.js Lambda",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run build && sam local start-api --port 5000 --env-vars env.json",
+      "cwd": "${workspaceFolder}/lambda-node"
+    },
+    {
+      "name": "Build & Start Python Lambda",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "sam build && sam local start-api --host 0.0.0.0 --port 5001 --env-vars env.json",
+      "cwd": "${workspaceFolder}/lambda-python"
+    },
+    {
+      "name": "Build & Start Update Songs",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run build && sam local invoke update-songs-db --env-vars env.json",
+      "cwd": "${workspaceFolder}/lambda-node"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Start All",
+      "configurations": [
+        "Launch Next.js",
+        "Build & Start Node.js Lambda",
+        "Build & Start Python Lambda"
+      ]
+    }
+  ]
+}

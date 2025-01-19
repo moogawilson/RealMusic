@@ -1,0 +1,74 @@
+.container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.descriptions {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  font-style: italic;
+}
+.description {
+  display: flex;
+  margin-top: 1rem;
+  margin-left: 2rem;
+  font-size: 25px;
+  color: rgb(167, 165, 162);
+}
+
+.heading {
+  font-size: 30px;
+  margin-left: 1rem;
+  width: auto;
+}
+
+.howItWorks {
+  display: flex;
+  margin-left: 3rem;
+  margin-top: 4rem;
+  font-style: normal;
+}
+.howItWorksHeading {
+  margin-left: 3rem;
+  width: 5rem;
+  font-size: 25px;
+  font-style: normal;
+}
+
+.howItWorksDescription {
+  font-size: 17px;
+  margin-left: 5rem;
+  width: 30rem;
+}
+.moreInfo {
+  position: relative;
+  display: flex;
+  top: 1rem;
+  margin-left: 5rem;
+}
+.randBoxToo {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.charts {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  background-color: rgb(18, 18, 26);
+  border-radius: 0.5rem;
+}
+.views {
+  display: flex;
+  align-items: center;
+}
+
+.potential {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+}
