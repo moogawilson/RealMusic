@@ -5,7 +5,10 @@ import Link from "next/link";
 export const GithubLink = () => {
   return (
     <div>
-      <Link href="https://github.com" className={styles.githubContainer}>
+      <Link
+        href="https://github.com/moogawilson/RealMusic"
+        className={styles.githubContainer}
+      >
         <h1 className={styles.githubWriting}>Free. Open. Real.</h1>
         <Image
           className={styles.githubImage}
