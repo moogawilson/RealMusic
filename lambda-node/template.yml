@@ -33,7 +33,7 @@ Resources:
   MyScheduledFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub update-songs-db-${DeploymentEnvironment}
+      FunctionName: !Sub update-songs-db-Production
       Handler: lambda-nodejs18.x/src/handlers/getNewSongs.handler_function
       Runtime: nodejs18.x
       CodeUri: ../
