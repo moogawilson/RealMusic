@@ -31,7 +31,7 @@ export const fetchUser = async (
       return {
         statusCode: 400,
         headers: CORS_HEADERS,
-        body: JSON.stringify({ message: "Bad Request: Email is required." }),
+        body: JSON.stringify({ message: "Bad Request: Email is required!" }),
       };
     }
     const user = await authenticateUser(event);

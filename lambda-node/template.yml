@@ -3,9 +3,6 @@ Transform: AWS::Serverless-2016-10-31
 Description: Sample SAM Template for TypeScript Lambda
 
 Parameters:
-  ProjectCache:
-    Type: String
-    Description: "The secret key for MyScheduledFunction"
   SelectorUrl:
     Type: String
     NoEcho: true
@@ -21,19 +18,22 @@ Parameters:
   FrontendUrl:
     Type: String
     NoEcho: true
+  DeploymentEnvironment:
+    Type: String
+    NoEcho: true
 
 # dont fucking change a thing here! this needs to be fixed
 Resources:
   ExistingApi:
     Type: AWS::Serverless::Api
     Properties:
-      Name: song-thing
-      StageName: Prod
+      Name: !Sub RealMusic-${DeploymentEnvironment}
+      StageName: !Ref DeploymentEnvironment
 
   MyScheduledFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: update-songs-db
+      FunctionName: !Sub update-songs-db-${DeploymentEnvironment}
       Handler: lambda-nodejs18.x/src/handlers/getNewSongs.handler_function
       Runtime: nodejs18.x
       CodeUri: ../
@@ -65,7 +65,7 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: hello-world
+      FunctionName: !Sub hello-world-${DeploymentEnvironment}
       CodeUri: ./
       Handler: app.lambdaHandler
       Runtime: nodejs18.x
@@ -85,7 +85,7 @@ Resources:
   FetchSongsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: fetch-songs
+      FunctionName: !Sub fetch-songs-${DeploymentEnvironment}
       CodeUri: ./
       Handler: src/handlers/fetchsongs.lambdaHandler
       Runtime: nodejs18.x
@@ -116,7 +116,7 @@ Resources:
   FetchUser:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: fetch-user
+      FunctionName: !Sub fetch-user-${DeploymentEnvironment}
       CodeUri: ./
       Handler: src/handlers/userHandler.fetchUser
       Runtime: nodejs18.x
@@ -146,7 +146,7 @@ Resources:
   createUser:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: create-user
+      FunctionName: !Sub create-user-${DeploymentEnvironment}
       CodeUri: ./
       Handler: src/handlers/userHandler.createUser
       Runtime: nodejs18.x
@@ -176,7 +176,7 @@ Resources:
   likeSong:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: like-song
+      FunctionName: !Sub like-song-${DeploymentEnvironment}
       CodeUri: ./
       Handler: src/handlers/fetchsongs.likeSong
       Runtime: nodejs18.x

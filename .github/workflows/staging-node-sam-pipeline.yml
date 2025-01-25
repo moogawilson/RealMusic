@@ -1,15 +1,15 @@
-name: Build and Deploy Backend to AWS
+name: (staging) Build and Deploy Backend to AWS
 
 on:
   push:
     branches:
-      - main
+      - staging
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
     env:
-      SELECTOR_URL: ${{ secrets.SELECTOR_URL }},
+      SELECTOR_URL: ${{ secrets.SELECTOR_URL_STAGE }},
       KEY: ${{ secrets.KEY }}
     steps:
       - uses: actions/checkout@v2
@@ -48,4 +48,4 @@ jobs:
 
       - run: |
           cd lambda-node
-          sam deploy   --stack-name RealMusic-production --region ap-southeast-2    --parameter-overrides DeploymentEnvironment=Production SelectorUrl=${{ secrets.SELECTOR_URL }} Key=${{ secrets.Key }}  DatabaseUrl=${{ secrets.DATABASE_URL }} NextAuthSecret=${{ secrets.NEXTAUTH_SECRET }} FrontendUrl=${{secrets.FRONTEND_URL}} --capabilities CAPABILITY_IAM   --resolve-s3   --no-confirm-changeset   --no-fail-on-empty-changeset   --force-upload   --no-progressbar
+          sam deploy   --stack-name RealMusic-staging --region ap-southeast-2    --parameter-overrides DeploymentEnvironment=Staging SelectorUrl=${{ secrets.SELECTOR_URL }} Key=${{ secrets.Key }}  DatabaseUrl=${{ secrets.DATABASE_URL }} NextAuthSecret=${{ secrets.NEXTAUTH_SECRET }} FrontendUrl=${{secrets.FRONTEND_URL}} --capabilities CAPABILITY_IAM   --resolve-s3   --no-confirm-changeset   --no-fail-on-empty-changeset   --force-upload   --no-progressbar
