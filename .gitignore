@@ -1,2 +1,3 @@
 .secrets
 staging.secrets
+.vscode/settings.json

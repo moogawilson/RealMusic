@@ -8,9 +8,11 @@ import YoutubePlayer from "./youtubePlayer/youtubePlayer";
 import PlayerControls from "./youtubePlayer/PlayerControls";
 import SongInfo from "./songInfo/songInfo";
 import RandomBox from "./randomBox/randomBox";
+import Background from "./background/background";
 export default async function ParentContainer() {
   return (
     <div>
+      <Background />
       <div className={styles.container}>
         <div className={styles.navBar}>
           <NavBar />
@@ -26,9 +28,7 @@ export default async function ParentContainer() {
             </div>
             <div className={styles.randomContainer}>
               <div className={styles.randomContainerToo}>
-                <div className={styles.randomBox}>
-                  <RandomBox />
-                </div>
+                <div className={styles.randomBox}>{/* <RandomBox /> */}</div>
 
                 <div className={styles.playerLikeContainer}>
                   <div className={styles.youtubeWindow}>

@@ -1,4 +1,3 @@
-"use client";
 import styles from "./randomBox.module.css";
 import LineGraph from "./viewData";
 import Potential from "./potential";
@@ -25,14 +24,14 @@ const RandomBox: React.FC = () => {
           for more information view the GitHub Repository
         </h1>
       </div>
-      <div className={styles.charts}>
+      {/* <div className={styles.charts}>
         <div className={styles.views}>
           <LineGraph />
         </div>
         <div className={styles.potential}>
           <Potential />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

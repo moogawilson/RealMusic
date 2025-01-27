@@ -22,6 +22,9 @@ Parameters:
     Type: String
     NoEcho: true
 
+Conditions:
+  IsProduction: !Equals [!Ref DeploymentEnvironment, Production]
+
 # dont fucking change a thing here! this needs to be fixed
 Resources:
   ExistingApi:
@@ -31,9 +34,10 @@ Resources:
       StageName: !Ref DeploymentEnvironment
 
   MyScheduledFunction:
+    # Condition: IsProduction
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub update-songs-db-Production
+      FunctionName: !Sub update-songs-db-${DeploymentEnvironment}
       Handler: lambda-nodejs18.x/src/handlers/getNewSongs.handler_function
       Runtime: nodejs18.x
       CodeUri: ../

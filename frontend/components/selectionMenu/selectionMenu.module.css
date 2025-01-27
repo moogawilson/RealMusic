@@ -5,7 +5,7 @@
   justify-content: space-evenly;
   height: 2rem;
   border-radius: 0.5rem;
-  background-color: rgb(118, 118, 136);
+  background-color: rgb(118, 118, 136, 0.75);
 }
 
 .text {
