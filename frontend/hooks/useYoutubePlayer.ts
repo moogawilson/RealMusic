@@ -24,7 +24,6 @@ export const useYouTubePlayer = (
     } else {
       createPlayer();
     }
-    setPlayerReady(true);
   }, []);
 
   useEffect(() => {
@@ -49,7 +48,9 @@ export const useYouTubePlayer = (
     });
     setPlayer(newPlayer);
   };
-  const handlePlayerReady = (event: any) => {};
+  const handlePlayerReady = (event: any) => {
+    setPlayerReady(true);
+  };
 
   useEffect(() => {
     if (player && playerReady) {
