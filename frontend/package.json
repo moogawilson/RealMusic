@@ -17,6 +17,7 @@
     "axios": "^1.7.8",
     "fast-average-color": "^9.4.0",
     "framer-motion": "^11.5.4",
+    "he": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "next": "14.2.5",
     "next-auth": "^4.24.10",
@@ -26,6 +27,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/he": "^1.2.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -8,6 +8,7 @@ export const createApiClient = async () => {
   const client = axios.create({
     baseURL: "/api/services",
     withCredentials: true,
+    timeout: 15000,
   });
 
   return { client, session };

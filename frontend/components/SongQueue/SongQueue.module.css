@@ -33,7 +33,6 @@
   display: flex;
   position: relative;
   align-items: center;
-  /* top: 5rem; */
   height: 5rem;
   width: 25rem;
   border-radius: 15px;
@@ -47,7 +46,6 @@
   top: 3rem;
   height: 7rem;
   width: 27rem;
-  /* background-color: rgb(83, 79, 102); */
   border-radius: 15px;
 }
 

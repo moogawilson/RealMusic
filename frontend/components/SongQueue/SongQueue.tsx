@@ -5,6 +5,9 @@ import { usePlayer } from "@/context/PlayerContext";
 import Image from "next/image";
 import { useMemo } from "react";
 import { getDominantColour } from "@/utils/getDominantColour";
+import { processText } from "@/utils/processText";
+
+//this file is very messy and need work
 
 const SongQueue: React.FC = () => {
   const { currentSong, songQueue, currentSongPosition } = usePlayer();
@@ -23,8 +26,25 @@ const SongQueue: React.FC = () => {
     }
   });
 
+  let currentSongProcessed = currentSong;
+  if (currentSong) {
+    currentSongProcessed = {
+      ...currentSong,
+      title: processText(currentSong.title),
+      artistName: processText(currentSong.artistName),
+    };
+  }
+  //is usememo necesary here?
   const displayedQueue = useMemo(() => {
-    return songQueue.slice(currentSongPosition + 1, currentSongPosition + 30);
+    return songQueue
+      .slice(currentSongPosition + 1, currentSongPosition + 30)
+      .map((song) => {
+        return {
+          ...song,
+          title: processText(song.title),
+          artistName: processText(song.artistName),
+        };
+      });
   }, [songQueue, currentSongPosition]);
 
   return (
@@ -41,9 +61,13 @@ const SongQueue: React.FC = () => {
             unoptimized
           />
         </div>
-        <h3 className={styles.songName}>{currentSong?.title}</h3>
-        <h1 className={styles.artistName}>{currentSong?.artistName}</h1>
-        <h1 className={styles.publishedDate}>{currentSong?.published}</h1>
+        <h3 className={styles.songName}>{currentSongProcessed?.title}</h3>
+        <h1 className={styles.artistName}>
+          {currentSongProcessed?.artistName}
+        </h1>
+        <h1 className={styles.publishedDate}>
+          {currentSongProcessed?.published}
+        </h1>
       </div>
       <h1 className={styles.nextUp}>Next Up...</h1>
 

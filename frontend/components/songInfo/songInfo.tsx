@@ -1,9 +1,18 @@
 "use client";
 import { usePlayer } from "@/context/PlayerContext";
 import styles from "./songInfo.module.css";
+import { processText } from "@/utils/processText";
 
 const SongInfo: React.FC = () => {
-  const { currentSong } = usePlayer();
+  let { currentSong } = usePlayer();
+
+  if (currentSong?.artistName && currentSong?.title) {
+    currentSong = {
+      ...currentSong,
+      title: processText(currentSong.title),
+      artistName: processText(currentSong.artistName),
+    };
+  }
 
   return (
     <div>
