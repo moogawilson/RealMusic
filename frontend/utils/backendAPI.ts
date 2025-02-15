@@ -54,8 +54,8 @@ export async function fetchLikedSongs(): Promise<Song[]> {
     const response = await client.get("liked-songs", {
       params: { ...(email && { email }) },
     });
-
-    return response.data;
+    console.log("jkhfd", response.data.likedSongs.likedSongs);
+    return response.data.likedSongs.likedSongs;
   } catch (error) {
     console.error("Error fetching song list:", error);
     return [];

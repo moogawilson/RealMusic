@@ -103,7 +103,17 @@ export const readLikedSongs = async (email: string) => {
     const result = await prisma.user.findUnique({
       where: { email: email },
       select: {
-        likedSongs: true,
+        likedSongs: {
+          select: {
+            id: true,
+            title: true,
+            artist: {
+              select: {
+                channelTitle: true,
+              },
+            },
+          },
+        },
       },
     });
 
