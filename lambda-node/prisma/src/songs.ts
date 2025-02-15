@@ -28,12 +28,12 @@ export const addLike = async (email: string, songID: string) => {
         },
       },
     });
-
+    console.log("existing like", existingLike);
     if (existingLike) {
       throw new Error("User has already liked this song.");
     }
 
-    await prisma.song.update({
+    const result = await prisma.song.update({
       where: { id: songID },
       data: {
         numberofLikes: { increment: 1 },
@@ -42,6 +42,7 @@ export const addLike = async (email: string, songID: string) => {
         },
       },
     });
+    console.log("like ", result);
   } catch (e) {
     throw new Error("Song like failed");
   }
