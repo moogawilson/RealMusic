@@ -70,7 +70,8 @@ export const likeSong = async (
       };
     }
 
-    addLike(user.email, event.pathParameters.songId);
+    const result = addLike(user.email, event.pathParameters.songId);
+    console.log("like result", result);
     return {
       statusCode: 200,
       headers: CORS_HEADERS,

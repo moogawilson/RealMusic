@@ -28,7 +28,7 @@ export const addLike = async (email: string, songID: string) => {
         },
       },
     });
-    console.log("existing like", existingLike);
+
     if (existingLike) {
       throw new Error("User has already liked this song.");
     }
@@ -42,8 +42,10 @@ export const addLike = async (email: string, songID: string) => {
         },
       },
     });
-    console.log("like ", result);
+
+    return result;
   } catch (e) {
+    console.log(e);
     throw new Error("Song like failed");
   }
 };
