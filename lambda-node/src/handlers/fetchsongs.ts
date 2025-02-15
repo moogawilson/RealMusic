@@ -70,7 +70,7 @@ export const likeSong = async (
       };
     }
 
-    const result = addLike(user.email, event.pathParameters.songId);
+    const result = await addLike(user.email, event.pathParameters.songId);
     console.log("like result", result);
     return {
       statusCode: 200,
