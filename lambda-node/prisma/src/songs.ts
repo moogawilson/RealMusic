@@ -97,3 +97,18 @@ export const checkIfCatalogued = async (id: string) => {
     return false;
   }
 };
+
+export const readLikedSongs = async (email: string) => {
+  try {
+    const result = await prisma.user.findUnique({
+      where: { email: email },
+      select: {
+        likedSongs: true,
+      },
+    });
+
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};

@@ -1,15 +1,22 @@
 "use client";
-
+import { fetchLikedSongs } from "@/utils/backendAPI";
 import styles from "./selectionMenu.module.css";
+
+const getLikedSongs = async () => {
+  const likedSongs = await fetchLikedSongs();
+  console.log(likedSongs);
+};
 
 export const SelectionMenu: React.FC = () => {
   return (
     <div className={styles.selectionMenu}>
-      <h1 className={styles.text}>Home</h1>
-      <h1 className={styles.text}>Top Songs</h1>
-      <h1 className={styles.text}>Top Artists</h1>
-      <h1 className={styles.text}>Latest</h1>
-      <h1 className={styles.text}>Liked Songs</h1>
+      <button className={styles.text}>Home</button>
+      <button className={styles.text}>Top Songs</button>
+      <button className={styles.text}>Top Artists</button>
+      <button className={styles.text}>Latest</button>
+      <button className={styles.text} onClick={getLikedSongs}>
+        Liked Songs
+      </button>
     </div>
   );
 };

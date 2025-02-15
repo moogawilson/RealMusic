@@ -1,7 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { getSongSelections } from "../utils/selectorAPI";
 import { authenticateUser } from "../middleware/authenticate";
-import { addLike } from "../../prisma/src/songs";
+import { addLike, readLikedSongs } from "../../prisma/src/songs";
 import { error } from "console";
 
 if (!process.env.FRONTEND_URL) {
@@ -76,6 +76,35 @@ export const likeSong = async (
       headers: CORS_HEADERS,
 
       body: JSON.stringify({ message: "song has been liked :)" }),
+    };
+  } catch (e) {
+    console.error("Error fetching songs:", e);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: "Internal Server Error." }),
+    };
+  }
+};
+
+export const fetchLikedSongs = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  try {
+    const user = await authenticateUser(event);
+    if (!user?.email) {
+      return {
+        statusCode: 401,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({ message: "Unauthorized: No token provided." }),
+      };
+    }
+    const likedSongs = await readLikedSongs(user.email);
+    console.log(likedSongs);
+    return {
+      statusCode: 200,
+      headers: CORS_HEADERS,
+
+      body: JSON.stringify({ likedSongs: likedSongs }),
     };
   } catch (e) {
     console.error("Error fetching songs:", e);

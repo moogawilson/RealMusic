@@ -46,6 +46,22 @@ export async function fetchSongList(
   }
 }
 
+export async function fetchLikedSongs(): Promise<Song[]> {
+  try {
+    const { client, session } = await createApiClient();
+    const email = session?.user.email;
+
+    const response = await client.get("liked-songs", {
+      params: { ...(email && { email }) },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching song list:", error);
+    return [];
+  }
+}
+
 export async function likeSong(songID: string): Promise<Song[]> {
   try {
     const { client, session } = await createApiClient();

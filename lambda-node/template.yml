@@ -113,6 +113,35 @@ Resources:
           - .prisma=file
           - .so.node=file
 
+  FetchLikedSongs:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub fetch-songs-${DeploymentEnvironment}
+      CodeUri: ./
+      Handler: src/handlers/fetchsongs.fetchLikedSongs
+      Runtime: nodejs18.x
+      Timeout: 30
+      Events:
+        FetchSongsAPI:
+          Type: Api
+          Properties:
+            Path: /liked-songs
+            Method: get
+            RestApiId: !Ref ExistingApi
+      Environment:
+        Variables:
+          NEXTAUTH_SECRET: !Ref NextAuthSecret
+          FRONTEND_URL: !Ref FrontendUrl
+          DATABASE_URL: !Ref DatabaseUrl
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/fetchsongs.ts
+        Loader:
+          - .prisma=file
+          - .so.node=file
+
   FetchUser:
     Type: AWS::Serverless::Function
     Properties:
