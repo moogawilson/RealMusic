@@ -10,13 +10,13 @@ export const SelectionMenu: React.FC = () => {
       <Link href="/" className={styles.text}>
         Home
       </Link>
-      <Link href="/" className={styles.text}>
+      <Link href="top-songs" className={styles.text}>
         Top Songs
       </Link>
       <Link href="/" className={styles.text}>
         Top Artists
       </Link>
-      <Link href="/" className={styles.text}>
+      <Link href="/latest-songs" className={styles.text}>
         Latest
       </Link>
       <Link href="/liked-songs" className={styles.text}>

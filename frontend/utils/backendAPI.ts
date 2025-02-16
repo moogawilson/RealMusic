@@ -62,6 +62,34 @@ export async function fetchLikedSongs(): Promise<Song[]> {
   }
 }
 
+export async function fetchTopSongs(): Promise<Song[]> {
+  try {
+    const { client } = await createApiClient();
+
+    const response = await client.get("top-songs");
+
+    console.log("jkhfd", response.data.topSongs);
+    return response.data.topSongs;
+  } catch (error) {
+    console.error("Error fetching song list:", error);
+    return [];
+  }
+}
+
+export async function fetchLatestSongs(): Promise<Song[]> {
+  try {
+    const { client } = await createApiClient();
+
+    const response = await client.get("latest-songs");
+
+    console.log("jkhfd", response.data.latestSongs);
+    return response.data.latestSongs;
+  } catch (error) {
+    console.error("Error fetching song list:", error);
+    return [];
+  }
+}
+
 export async function likeSong(songID: string): Promise<Song[]> {
   try {
     const { client, session } = await createApiClient();

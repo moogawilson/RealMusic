@@ -122,3 +122,51 @@ export const readLikedSongs = async (email: string) => {
     console.error(err);
   }
 };
+
+export const readTopSongs = async () => {
+  try {
+    const result = await prisma.song.findMany({
+      orderBy: {
+        numberofLikes: "desc",
+      },
+      take: 25,
+      select: {
+        id: true,
+        title: true,
+        artist: {
+          select: {
+            channelTitle: true,
+          },
+        },
+      },
+    });
+
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const readLatestSongs = async () => {
+  try {
+    const result = await prisma.song.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 25,
+      select: {
+        id: true,
+        title: true,
+        artist: {
+          select: {
+            channelTitle: true,
+          },
+        },
+      },
+    });
+
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};

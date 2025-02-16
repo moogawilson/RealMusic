@@ -4,22 +4,23 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Song } from "@/utils/backendAPI";
 import styles from "./page.module.css";
+import { fetchTopSongs } from "@/utils/backendAPI";
 
 import SongList from "@/components/songList/SongList";
 export default function Page() {
-  const [likedSongs, setLikedSongs] = useState<Song[]>();
+  const [topSongs, setTopSongs] = useState<Song[]>();
   useEffect(() => {
-    async function getLikedSongs() {
-      const likedSongs = await fetchLikedSongs();
-      setLikedSongs(likedSongs);
+    async function getTopSongs() {
+      const topSongs = await fetchTopSongs();
+      setTopSongs(topSongs);
     }
 
-    getLikedSongs();
+    getTopSongs();
   }, []);
 
   return (
     <div>
-      <SongList songs={likedSongs} />
+      <SongList songs={topSongs} />
     </div>
   );
 }
