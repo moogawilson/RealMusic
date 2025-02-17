@@ -1,15 +1,42 @@
 "use client";
-
+import { useState } from "react";
+import Link from "next/link";
 import styles from "./selectionMenu.module.css";
 
 export const SelectionMenu: React.FC = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <div className={styles.selectionMenu}>
-      <h1 className={styles.text}>Home</h1>
-      <h1 className={styles.text}>Top Songs</h1>
-      <h1 className={styles.text}>Top Artists</h1>
-      <h1 className={styles.text}>Latest</h1>
-      <h1 className={styles.text}>Liked Songs</h1>
+      {["Home", "Top Songs", "Top Artists", "Latest", "Liked Songs"].map(
+        (text, index) => (
+          <Link
+            key={index}
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setModalOpen(true);
+            }}
+          >
+            {text}
+          </Link>
+        )
+      )}
+
+      {modalOpen && (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setModalOpen(false)}
+        >
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p>🚧 Coming Soon! 🚧</p>
+            <button onClick={() => setModalOpen(false)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
