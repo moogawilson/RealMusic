@@ -1,5 +1,5 @@
 .songContainer {
-  background-color: blue;
+  /* background-color: blue; */
 }
 
 .songName {
@@ -29,18 +29,21 @@
 }
 .list {
   /* overflow-y: auto; */
-  max-height: 40rem;
+  max-height: calc(100vh - 500px);
   width: 100%;
   /* flex-grow: 1; */
   margin-top: 3rem;
+  flex: 1;
   display: flex;
+  min-height: 0;
+  overflow-y: auto;
   flex-direction: column;
   align-items: center;
   gap: 0.3rem;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 .listItem {
-  background-color: rgb(16, 91, 156);
+  /* background-color: rgb(16, 91, 156); */
   display: flex;
 
   flex-direction: row;

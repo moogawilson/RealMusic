@@ -18,7 +18,17 @@ export default function Page() {
   }, []);
 
   return (
-    <div>
+    <div className={styles.songsContainer}>
+      <div className={styles.topBanner}>
+        <Image
+          className={styles.likeImage}
+          src={"/like.png"}
+          alt="like button"
+          width={200}
+          height={200}
+        ></Image>
+        <h1 className={styles.text}>The good shit...</h1>
+      </div>
       <SongList songs={likedSongs} />
     </div>
   );
